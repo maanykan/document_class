@@ -1,0 +1,17 @@
+* DONE Reformat data for LIBSVM
+  - using preprocess-data-libsvm.py
+* DONE Rank features [4/4]
+  - [X] Write a read_data_2_matrix function to read from features file (that
+    doesn't contain the labels) directly to a matrix -- written in
+    filter_util.py
+  - [X] Pearson Correlation Coefficient
+  - [X] Signal-to-Noise Ratio
+  - [X] T-test
+* TODO Scale data
+  - using LIBSVM itself
+* TODO Output data in a file
+  - Write a function to do this
+* TODO Reformat and Preprocess for scikitlearn nearest neighbor
+
+note
+https://stackoverflow.com/questions/30991592/support-vector-machine-in-python-using-libsvm-example-of-features#
