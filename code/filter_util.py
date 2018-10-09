@@ -1,6 +1,7 @@
 """filter_util module contains functions to read feature vectors into a sparse
 matrix, read labels into a list, and compute feature selection filters, such as
-Pearson correlation coefficient, Signal-to-noise ration and t-test.
+Pearson correlation coefficient, Signal-to-noise ration and t-test, and create
+input files for LIBSVM and scikit-learn Nearest Neighber algorithm.
 
 Pooya Taherkhani
 pt376511 at ohio edu
@@ -8,7 +9,6 @@ pt376511 at ohio edu
 September 2018
 
 """
-
 import numpy as np
 from scipy.sparse import csc_matrix, vstack, hstack
 
@@ -92,7 +92,7 @@ do not match.')
     p_corr_coef = np.asarray(numerator) / denominator
     p_corr_coef[np.isnan(p_corr_coef)] = 0
     p_corr_coef[np.isinf(p_corr_coef)] = 0
-    print('p_corr_coef:\n', p_corr_coef)
+    # print('p_corr_coef:\n', p_corr_coef)
     p_corr_coef = abs(p_corr_coef)
     # sort columns of feature matrix in descending order based on corr coef
     # value
@@ -142,7 +142,7 @@ def sort_ind_signal_2_noise_and_t_test(feature_matrix, labels):
     mu_s2n = abs_dif_mu / (sigma_plus + sigma_minus)  # signal to noise
     mu_s2n[np.isnan(mu_s2n)] = 0
     mu_s2n[np.isinf(mu_s2n)] = 0
-    print('mu_s2n:\n', mu_s2n)
+    # print('mu_s2n:\n', mu_s2n)
     mu_s2n_sorted_indices = np.argsort(-mu_s2n)
     # ============ t-test
     m_plus = (y == 1).sum()
@@ -151,7 +151,7 @@ def sort_ind_signal_2_noise_and_t_test(feature_matrix, labels):
                                   m_minus)
     t_test[np.isnan(t_test)] = 0
     t_test[np.isinf(t_test)] = 0
-    print('t_test:\n', t_test)
+    # print('t_test:\n', t_test)
     t_test_sorted_indices = np.argsort(-t_test)
     s2n_and_t_test_ind = [mu_s2n_sorted_indices, t_test_sorted_indices]
     return s2n_and_t_test_ind
@@ -170,4 +170,36 @@ def normalize(matrix):
     return csc_matrix(matrix / x_norm_matrix)
 
 
-# def output_file()
+def svm_input_file(feature_matrix, labels, filter_name, N):
+    """Dump a (normalized) sparse matrix of features and a list of labels
+    to a file in the format ready to be fed to LIBSVM.
+    TAKE IN:  sparse feature matrix, list of labels, and feature selection
+    filter name
+
+    """
+    filename = '../data/svm_input_' + filter_name + '_' + str(N) + '.in'
+    i_last = 0
+    with open(filename, 'w') as outfile:
+        outfile.write(str(labels[i_last]) + ' ')
+        for i, j in zip(*feature_matrix.nonzero()):  # '*' converts tuple to list!
+            if i != i_last:
+                outfile.write('\n' + str(labels[i]) + ' ')
+                i_last = i
+            outfile.write(str(j) + ':' + str(feature_matrix[i, j]) + ' ')
+
+
+def create_svm_input_files(matrix_cc, matrix_s2n, matrix_tt, labels):
+    """Create LIBSVM input files for all combinations of (feature selection) filter
+    and (number of features to use) N.
+
+    """
+    N = [1, 5, 10, 20, 50] + [n for n in range(100, 1000, 100)] + \
+        [n for n in range(1000, 21000, 1000)]
+    N = [1, 4, 7, 10]
+    for n in N:
+        matrix_cc_chopped = matrix_cc[:, range(0, n)]
+        matrix_s2n_chopped = matrix_s2n[:, range(0, n)]
+        matrix_tt_chopped = matrix_tt[:, range(0, n)]
+        svm_input_file(matrix_cc_chopped, labels, 'cc', n)
+        svm_input_file(matrix_s2n_chopped, labels, 's2n', n)
+        svm_input_file(matrix_tt_chopped, labels, 'tt', n)
