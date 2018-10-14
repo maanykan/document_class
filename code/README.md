@@ -29,7 +29,7 @@ directory).
 
 Now to run our Python scripts change directory to 'code'.  Then,
 
-``
+```
 $ python3 test_filter_util.py
 $ python3 test_svm.py
-``
+```
