@@ -9,9 +9,13 @@
   - [X] T-test
 * TODO Scale data
   - using LIBSVM itself
-* TODO Output data in a file
+  - not sure if we need to scale the data as we have already normalized it.
+* DONE Output data in a file
   - Write a function to do this
+* DONE Create Data files for different number of N
+* TODO Test SVM
 * TODO Reformat and Preprocess for scikitlearn nearest neighbor
+* TODO Test kNN
 
 note
 https://stackoverflow.com/questions/30991592/support-vector-machine-in-python-using-libsvm-example-of-features#

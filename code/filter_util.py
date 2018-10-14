@@ -1,14 +1,14 @@
-"""filter_util module contains functions to read feature vectors into a sparse
-matrix, read labels into a list, and compute feature selection filters, such as
-Pearson correlation coefficient, Signal-to-noise ration and t-test, and create
-input files for LIBSVM and scikit-learn Nearest Neighber algorithm.
+# filter_util module contains functions to read feature vectors into a sparse
+# matrix, read labels into a list, and compute feature selection filters, such
+# as Pearson correlation coefficient, Signal-to-noise ration and t-test, and
+# create input files for LIBSVM and scikit-learn Nearest Neighber algorithm.
 
-Pooya Taherkhani
-pt376511 at ohio edu
+# Pooya Taherkhani
+# pt376511 at ohio edu
 
-September 2018
+# September 2018
 
-"""
+
 import numpy as np
 from scipy.sparse import csc_matrix, vstack, hstack
 
@@ -170,27 +170,31 @@ def normalize(matrix):
     return csc_matrix(matrix / x_norm_matrix)
 
 
-def svm_input_file(feature_matrix, labels, filter_name, N):
+def svm_input_file(feature_matrix, labels, filter_name, N, train_or_test):
     """Dump a (normalized) sparse matrix of features and a list of labels
     to a file in the format ready to be fed to LIBSVM.
     TAKE IN:  sparse feature matrix, list of labels, and feature selection
-    filter name
+              filter name, train_or_test: can be 'train' or 'test'
 
     """
-    filename = '../data/svm_input_' + filter_name + '_' + str(N) + '.in'
+    filename = '../data/' + train_or_test + '_svm' + '/svm_input_' + \
+               filter_name + '_'+ train_or_test + '_' + str(N) + '.in'
     i_last = 0
     with open(filename, 'w') as outfile:
         outfile.write(str(labels[i_last]) + ' ')
-        for i, j in zip(*feature_matrix.nonzero()):  # '*' converts tuple to list!
+        for i, j in zip(*feature_matrix.nonzero()):  # * converts tuple to list
             if i != i_last:
                 outfile.write('\n' + str(labels[i]) + ' ')
                 i_last = i
-            outfile.write(str(j) + ':' + str(feature_matrix[i, j]) + ' ')
+            # LIBSVM counts features from 1, not 0, thus j+1
+            outfile.write(str(j+1) + ':' + str(feature_matrix[i, j]) + ' ')
 
 
-def create_svm_input_files(matrix_cc, matrix_s2n, matrix_tt, labels):
+def create_svm_input_files(matrix_cc, matrix_s2n, matrix_tt, labels,
+                           train_or_test):
     """Create LIBSVM input files for all combinations of (feature selection) filter
     and (number of features to use) N.
+    TAKE IN:  ..., train_or_test: can be 'train' or 'test'
 
     """
     N = [1, 5, 10, 20, 50] + [n for n in range(100, 1000, 100)] + \
@@ -200,6 +204,6 @@ def create_svm_input_files(matrix_cc, matrix_s2n, matrix_tt, labels):
         matrix_cc_chopped = matrix_cc[:, range(0, n)]
         matrix_s2n_chopped = matrix_s2n[:, range(0, n)]
         matrix_tt_chopped = matrix_tt[:, range(0, n)]
-        svm_input_file(matrix_cc_chopped, labels, 'cc', n)
-        svm_input_file(matrix_s2n_chopped, labels, 's2n', n)
-        svm_input_file(matrix_tt_chopped, labels, 'tt', n)
+        svm_input_file(matrix_cc_chopped, labels, 'cc', n, train_or_test)
+        svm_input_file(matrix_s2n_chopped, labels, 's2n', n, train_or_test)
+        svm_input_file(matrix_tt_chopped, labels, 'tt', n, train_or_test)

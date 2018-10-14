@@ -1,7 +1,9 @@
+# Preprocess data for LIBSVM and scikit-learn Nearest Neighber
+
 import filter_util as f
 # import numpy as np
 # import scipy as sp
-# from smut import *
+# from svmutil import *
 
 matrix = f.read_data('../data/dexter_train_copy.data')
 labels = f.read_labels('../data/dexter_train_copy.labels')
@@ -13,24 +15,10 @@ matrix_corr_coef_norm = matrix_norm[:, column_indices_corr_coef]
 matrix_sig_2_noise_norm = matrix_norm[:, column_indices_sig_2_noise]
 matrix_t_test_norm = matrix_norm[:, column_indices_t_test]
 
-f.create_svm_input_files(matrix_corr_coef_norm, matrix_sig_2_noise_norm, \
-                         matrix_t_test_norm, labels)
-
-# N = [1, 5, 10, 20, 50] + [n for n in range(100, 1000, 100)] + \
-#     [n for n in range(1000, 21000, 1000)]
-
-# N = [1, 4, 7, 10]
-
-# print('matrix:\n', matrix_corr_coef_norm.toarray())
-
-# for n in N:
-#     matrix_cc_chopped = matrix_corr_coef_norm[:, range(0, n)]
-#     matrix_s2n_chopped = matrix_sig_2_noise_norm[:, range(0, n)]
-#     matrix_tt_chopped = matrix_t_test_norm[:, range(0, n)]
-#     f.svm_input_file(matrix_cc_chopped, labels, 'cc')
-#     f.svm_input_file(matrix_sig_2_noise_norm, labels, 's2n')
-#     f.svm_input_file(matrix_t_test_norm, labels, 'tt')
-
+f.create_svm_input_files(matrix_corr_coef_norm, matrix_sig_2_noise_norm,
+                         matrix_t_test_norm, labels, 'train')
+f.create_svm_input_files(matrix_corr_coef_norm, matrix_sig_2_noise_norm,
+                         matrix_t_test_norm, labels, 'test')
 
 
 # matrix_corr_coef = matrix[:, column_indices_corr_coef]
