@@ -21,7 +21,7 @@ have a different version number), and type 'make'.
 ## Copy LIBSVM executable and Python code ##
 
 Now copy 'svm.py', 'svmutil.py', and 'commonutil.py' from the 'python'
-directory of LIBSVM into our 'code' directory.Also, copy the executable
+directory of LIBSVM into our 'code' directory.  Also, copy the executable
 'libsvm.so.2' from 'libsvm-3.22' to our main directory (one above 'code'
 directory).
 
