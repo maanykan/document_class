@@ -2,7 +2,7 @@
 
 *Ongoing project.*
 
-Determine if a document is realted to a particular subject (in this case
+Determine if a document is related to a particular subject (in this case
 'corporate acquisition') using support vector machines and nearest neighbor
 algorithm.
 
@@ -15,19 +15,19 @@ package for training and testing support vector machines.
 
 ## Compile LIBSVM ##
 
-After unziping LIBSVM, change directory to 'libsvm-3.22/python/' (yours may
-have a different version number), and type 'make'.
+After unziping LIBSVM, change directory to `libsvm-3.22/python/` (yours may
+have a different version number), and type `make`.
 
 ## Copy LIBSVM executable and Python code ##
 
-Now copy 'svm.py', 'svmutil.py', and 'commonutil.py' from the 'python'
-directory of LIBSVM into our 'code' directory.  Also, copy the executable
-'libsvm.so.2' from 'libsvm-3.22' to our main directory (one above 'code'
+Now copy `svm.py`, `svmutil.py`, and `commonutil.py` from the `python`
+directory of LIBSVM into our `code` directory.  Also, copy the executable
+`libsvm.so.2` from `libsvm-3.22` to our main directory (one above `code`
 directory).
 
 ## Run project ##
 
-Now to run our Python scripts change directory to 'code'.  Then,
+Now to run our Python scripts change directory to `code`.  Then type
 
 ```bash
 $ python3 create_svm_files.py
