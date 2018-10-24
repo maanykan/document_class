@@ -3,7 +3,5 @@ code/svmutil.py
 code/svm.py
 code/commonutil.py
 code/__pycache__/
-data/train_svm/*
-data/test_svm/*
 data/dexter_train_copy.data
 data/dexter_train_copy.labels
