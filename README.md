@@ -1,5 +1,8 @@
-Ongoing project.
+# Document Classifier #
 
-To run the code, read the README file inside 'code' directory.
+*Ongoing project.*
 
-To see the results and discussion, read the PDF report.
+To run the code, read the README file inside `code` directory.
+
+To see the results and discussion, read the Document Classifier section of
+REPORT.pdf.

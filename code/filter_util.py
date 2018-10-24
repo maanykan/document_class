@@ -199,11 +199,12 @@ def create_svm_input_files(matrix_cc, matrix_s2n, matrix_tt, labels,
     """
     N = [1, 5, 10, 20, 50] + [n for n in range(100, 1000, 100)] + \
         [n for n in range(1000, 21000, 1000)]
-    N = [1, 4, 7, 10]
     for n in N:
-        matrix_cc_chopped = matrix_cc[:, range(0, n)]
-        matrix_s2n_chopped = matrix_s2n[:, range(0, n)]
-        matrix_tt_chopped = matrix_tt[:, range(0, n)]
+        # max index in original Dexter data was 19999, thus n-1
+        matrix_cc_chopped = matrix_cc[:, range(0, n-1)]
+        matrix_s2n_chopped = matrix_s2n[:, range(0, n-1)]
+        matrix_tt_chopped = matrix_tt[:, range(0, n-1)]
         svm_input_file(matrix_cc_chopped, labels, 'cc', n, train_or_test)
         svm_input_file(matrix_s2n_chopped, labels, 's2n', n, train_or_test)
         svm_input_file(matrix_tt_chopped, labels, 'tt', n, train_or_test)
+        print('Created' , train_or_test,  'files for', n, 'features')

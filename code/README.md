@@ -1,12 +1,12 @@
 # Document Classifier #
 
-Ongoing project.
+*Ongoing project.*
 
 Determine if a document is realted to a particular subject (in this case
 'corporate acquisition') using support vector machines and nearest neighbor
 algorithm.
 
-# Installing #
+# Installation #
 
 ## Download LIBSVM ##
 
@@ -29,7 +29,7 @@ directory).
 
 Now to run our Python scripts change directory to 'code'.  Then,
 
-```
-$ python3 test_filter_util.py
+```bash
+$ python3 create_svm_files.py
 $ python3 test_svm.py
 ```
